@@ -1,0 +1,26 @@
+/*
+Theme Name: Astra Child
+Theme URI: https://wpastra.com/
+Template: astra
+Author: Othello Deemi
+Author URI: https://othello-deemi.netmatters-scs.co.uk
+Description: Child of the Astra theme
+Version: 1.0.0
+
+*/
+
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+nav .main-navigation ul li a {
+    font-weight: 400;
+}
+
+nav .main-navigation ul li a:hover {
+    color: #da1c4b !important;
+}
+
+.ue_post_blocks_title {
+    min-height: 7.125rem;
+}
