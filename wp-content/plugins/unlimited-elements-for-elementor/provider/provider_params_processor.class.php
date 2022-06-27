@@ -751,8 +751,6 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 			
 			$featuredImageID = $this->getPostFeaturedImageID($postID, $content, $postType);
 			
-			
-			
 			if(!empty($featuredImageID)){
 				
 				$imageArgs = array();
@@ -1165,12 +1163,8 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 		$isForWoo = UniteFunctionsUC::strToBool($isForWoo);
 		
 		//enable filters
-		$isAjax = UniteFunctionsUC::getVal($value, "{$name}_isajax");
-		$isAjax = UniteFunctionsUC::strToBool($isAjax);
 		
-		$isAjaxSetUrl = UniteFunctionsUC::getVal($value, "{$name}_ajax_seturl");
-		
-		$isFilterable = $isAjax && ($isAjaxSetUrl != "ajax");
+		$isFilterable = $this->getIsFilterable($value, $name);
 		
 		$isRelatedPosts = $source == "related";
 		$relatePostsType = "";
@@ -2109,7 +2103,35 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 		GlobalsProviderUC::$lastPostQuery_offset = $offset;
 		
 	}
+
+	/**
+	 * get if the request filterable
+	 */
+	private function getIsFilterable($value, $name){
 		
+		$isAjax = UniteFunctionsUC::getVal($value, "{$name}_isajax");
+		$isAjax = UniteFunctionsUC::strToBool($isAjax);
+		
+		$isAjaxSetUrl = UniteFunctionsUC::getVal($value, "{$name}_ajax_seturl");
+		
+		$isFilterable = $isAjax && ($isAjaxSetUrl != "ajax");
+		
+		if($isFilterable == true)
+			return(true);
+		
+		//check ajax search
+			
+		$options = $this->addon->getOptions();
+		
+		$special = UniteFunctionsUC::getVal($options, "special");
+		
+		if($special == "ajax_search")
+			return(true);
+		
+		
+		return(false);
+	}
+	
 	
 	/**
 	 * get current posts
@@ -2123,14 +2145,10 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 		$orderDir = UniteFunctionsUC::getVal($value, $name."_orderdir1");
 		$orderByMetaKey = UniteFunctionsUC::getVal($value, $name."_orderby_meta_key1");
 		
+		$maxItems = UniteFunctionsUC::getVal($value, $name."_maxitems_current");
+
 		//enable filters
-		$isAjax = UniteFunctionsUC::getVal($value, "{$name}_isajax");
-		$isAjax = UniteFunctionsUC::strToBool($isAjax);
-		
-		$isAjaxSetUrl = UniteFunctionsUC::getVal($value, "{$name}_ajax_seturl");
-		
-		$isFilterable = $isAjax && ($isAjaxSetUrl != "ajax");
-		
+		$isFilterable = $this->getIsFilterable($value, $name);
 		
 		if($orderBy == "default")
 			$orderBy = null;
@@ -2155,6 +2173,8 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 		if(!empty($orderDir))
 			$currentQueryVars["order"] = $orderDir;
 		
+		if(!empty($maxItems) && is_numeric($maxItems))
+			$currentQueryVars["posts_per_page"] = $maxItems;
 		
 		$currentQueryVars = apply_filters( 'elementor/theme/posts_archive/query_posts/query_vars', $currentQueryVars);
 		
@@ -2220,7 +2240,6 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 			
 			$query = new WP_Query( $currentQueryVars );
 			
-			
 		}
 		
 		
@@ -2237,6 +2256,7 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 		$this->saveLastQueryAndPage($query, GlobalsProviderUC::QUERY_TYPE_CURRENT);
 				
 		$arrPosts = $query->posts;
+
 		
 		if(empty($arrPosts))
 			$arrPosts = array();
@@ -3372,6 +3392,23 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 						"title"=>$title,
 						"object"=>$item
 					);
+					
+				$postData = $this->getPostDataByObj($item);
+				
+				
+				$arrFields = array("id","alias","link","intro","intro_full","date","date_modified","image","image_thumb","image_thumb_large");
+				
+				foreach($arrFields as $fieldKey){
+					
+					if(array_key_exists($fieldKey, $postData) == false)
+						continue;
+					
+					$value = UniteFunctionsUC::getVal($postData, $fieldKey);
+					
+					$newItem[$fieldKey] = $value;
+				}
+				
+				
 				break;
 				case "terms":
 				break;

@@ -615,7 +615,7 @@ class UniteCreatorElementorWidget extends Widget_Base {
           	
          	
          	$arrControl = $this->getControlArrayUC($param, true);
-
+			
 			//add control (responsive or not)
 			if(isset($arrControl["uc_responsive"])){
     						
@@ -673,6 +673,7 @@ class UniteCreatorElementorWidget extends Widget_Base {
     		    		
     	}
     	
+    	//add the control actually
     			
          $this->objControls->add_control($controlName, $arrItemsControl);
           
@@ -1761,9 +1762,22 @@ class UniteCreatorElementorWidget extends Widget_Base {
     			$settings = new UniteCreatorSettings();
     			
     			$arrChildParams = $settings->getMultipleCreatorParams($param);
-    			    			
-    			foreach($arrChildParams as $childParam)
+    					
+    			foreach($arrChildParams as $childParam){
+    				
+    				//add condition to child params
+    				
+    				if($type == UniteCreatorDialogParam::PARAM_TEMPLATE){
+    					
+    					foreach($param as $paramKey => $paramValue ){
+    						if(strpos($paramKey, "condition") !== false)
+    							$childParam[$paramKey] = $paramValue;
+    					}
+    					
+    				}
+    				
     				$this->addElementorParamUC($childParam,$objControls);
+    			}
     			
     		break;
     		case UniteCreatorDialogParam::PARAM_POSTS_LIST:
@@ -1787,8 +1801,12 @@ class UniteCreatorElementorWidget extends Widget_Base {
     		case UniteCreatorDialogParam::PARAM_FONT_OVERRIDE:
     		break;
     		default:
+    			
+    			//add regular control
+    			
     			$arrControl = $this->getControlArrayUC($param);
-				
+    			
+		    	
     			$type = UniteFunctionsUC::getVal($param, "type");
     			
     			switch($type){
@@ -1821,6 +1839,7 @@ class UniteCreatorElementorWidget extends Widget_Base {
     			}
     		break;
     	}
+    	
     	
     	//add some child params
     	$this->checkAddRelatedControls($param, $objControls);
@@ -2379,8 +2398,7 @@ class UniteCreatorElementorWidget extends Widget_Base {
 	          			
 	          			
 	          		}//not emtpy tabName
-		          		
-	          		
+
 	          		$this->addElementorParamUC($param);
 	          			          		
 	          		

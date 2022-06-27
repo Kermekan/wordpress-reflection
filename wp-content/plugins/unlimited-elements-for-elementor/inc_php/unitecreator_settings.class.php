@@ -135,7 +135,7 @@ class UniteCreatorSettingsWork extends UniteSettingsAdvancedUC{
 	* get multiple params creator format from one param
 	 */
 	public function getMultipleCreatorParams($param){
-		
+				
 		if(!empty($this->arrSettings))
 			UniteFunctionsUC::throwError("the settings should be empty for this operation");
 		

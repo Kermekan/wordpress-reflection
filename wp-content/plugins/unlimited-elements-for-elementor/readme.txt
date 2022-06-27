@@ -11,8 +11,18 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 The best package of Free Elementor Addons. +100 Free Elementor Widgets, +10 Free Animated Backgrounds, +30 Free Elementor Templates, WooCommerce Widgets, Full Screen Menu Addons, Testimonial Slider, Post Grid, Carousel Widgets, Event Widgets, Button Effects for Elementor, Instagram Addons, Icon Boxes, Flipbox, Image Accordion, Timeline Widget, Video Galleries Dynamic Loop Builder, Whatsapp Chat, Price List Addons. Including the one and only Widget Creator Elementor Website Builder and Editor for Elementor to create custom.
 
 
+
 == Description ==
 
+<h3>Birthday Sale</h3>
+
+Birthday Sale! Save up-to 50% off.
+Time is running out! 
+<a href="https://unlimited-elements.com/pricing/">View Deal</a>
+
+<br>
+
+<h3>Plugin Description</h3>
 
 Take your Elementor page building experience to the next level with Unlimited Elements for Elementor. This is the last widget pack you will need. Find everything in one place and get more than +100 free widgets for your Elementor website. All our elements are easy to use and built with our unique Widget Creator framework. 
 <a href="https://unlimited-elements.com/elementor-widgets/">CHECK OUT THE DEMOS</a>
@@ -469,6 +479,13 @@ Note : This plugin works with Elementor. Make sure you have [Elementor](https://
 3. Navigate to Unlimited Elements in the WordPress side menu and install the widget you want by hovering over it and clicking install.
 
 == Changelog ==
+
+version 1.5.19 2022-06-21:
+
+* Feature: added max posts to current query
+* Fix: fixed controls conditions for elementor template control
+* Feature: added more fields to dynamic grid loop (was only title)
+* Change: added birthday sale banner and text
 
 
 version 1.5.17 2022-06-21:

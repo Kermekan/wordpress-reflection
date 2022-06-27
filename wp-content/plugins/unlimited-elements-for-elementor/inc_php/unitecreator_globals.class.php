@@ -186,7 +186,6 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 				self::$current_host = self::$current_protocol.self::$current_host;
 						
 			self::$current_page_url = self::$current_host.UniteFunctionsUC::getVal($_SERVER, "REQUEST_URI");
-						
 			
 			self::$pathPluginRel = basename(self::$pathPlugin)."/";
 			self::$pathWPLanguages = self::$pathPluginRel."languages/";			

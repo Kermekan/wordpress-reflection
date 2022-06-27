@@ -330,7 +330,13 @@ class UniteCreatorFiltersProcess{
 		
 		if(!empty($numItems))
 			$arrOutput["num_items"] = $numItems;
-				
+		
+		//search
+		$search = UniteFunctionsUC::getVal($request, "ucs");
+		
+		if(!empty($search))
+			$arrOutput["search"] = $search;
+		
 		self::$arrInputFiltersCache = $arrOutput;
 		
 		return($arrOutput);
@@ -412,6 +418,12 @@ class UniteCreatorFiltersProcess{
 		
 		if(!empty($numItems) && is_numeric($numItems))
 			self::$filters["num_items"] = $numItems;
+		
+		//get search
+		$search = UniteFunctionsUC::getVal($arrInputFilters, "search");
+		
+		if(!empty($search))
+			self::$filters["search"] = $search;
 		
 		
 		return(self::$filters);
@@ -541,13 +553,11 @@ class UniteCreatorFiltersProcess{
 	 * process request filters
 	 */
 	public function processRequestFilters($args, $isFilterable, $isMainQuery = false){
-				
 		
 		$isUnderAjax = $this->isUnderAjax();
 		
 		if($isUnderAjax == false && $isFilterable == false)
 			return($args);
-		
 		
 		$arrFilters = $this->getRequestFilters();
 		
@@ -556,6 +566,7 @@ class UniteCreatorFiltersProcess{
 		$page = UniteFunctionsUC::getVal($arrFilters, "page");
 		$numItems = UniteFunctionsUC::getVal($arrFilters, "num_items");
 		$offset = UniteFunctionsUC::getVal($arrFilters, "offset");
+		$search = UniteFunctionsUC::getVal($arrFilters, "search");
 		
 		
 		if(!empty($page))
@@ -569,6 +580,11 @@ class UniteCreatorFiltersProcess{
 			if(!empty($numItems))
 				$args["posts_per_page"] = $numItems;
 		}
+		
+		//search
+		if(!empty($search))
+			$args["s"] = $search;
+		
 		
 		$arrTerms = UniteFunctionsUC::getVal($arrFilters, "terms");
 		if(!empty($arrTerms)){
@@ -614,6 +630,7 @@ class UniteCreatorFiltersProcess{
 	 * if it's have post list and has option that enable ajax
 	 */
 	private function validateAddonAjaxReady($addon, $arrSettingsValues){
+		
 				
 		$paramPostList = $addon->getParamByType(UniteCreatorDialogParam::PARAM_POSTS_LIST);
 		
@@ -624,8 +641,16 @@ class UniteCreatorFiltersProcess{
 			
 		if(empty($paramPostList))
 			UniteFunctionsUC::throwError("Widget not ready for ajax");
-	
+		
 		$postListName = UniteFunctionsUC::getVal($paramPostList, "name");
+		
+		//check for ajax search
+		$options = $addon->getOptions();
+		$special = UniteFunctionsUC::getVal($options, "special");
+		
+		if($special === "ajax_search")
+			return($postListName);
+		
 		
 		$isAjaxReady = UniteFunctionsUC::getVal($arrSettingsValues, $postListName."_isajax");
 		$isAjaxReady = UniteFunctionsUC::strToBool($isAjaxReady);
@@ -995,18 +1020,48 @@ class UniteCreatorFiltersProcess{
 	
 	private function _______AJAX_SEARCH__________(){}
 	
+	
 	/**
 	 * ajax search
 	 */
 	private function putAjaxSearchData(){
 		
+		$responseCode = http_response_code();
+		
+		if($responseCode != 200)
+			http_response_code(200);
+		
+		$layoutID = UniteFunctionsUC::getPostGetVariable("layoutid","",UniteFunctionsUC::SANITIZE_KEY);
+		$elementID = UniteFunctionsUC::getPostGetVariable("elid","",UniteFunctionsUC::SANITIZE_KEY);
+
+		$arrContent = HelperProviderCoreUC_EL::getElementorContentByPostID($layoutID);
+		
+		if(empty($arrContent))
+			UniteFunctionsUC::throwError("Elementor content not found");
+		
+		//run the post query
+		$arrHtmlWidget = $this->getContentWidgetHtml($arrContent, $elementID);
+
+		$htmlGridItems = UniteFunctionsUC::getVal($arrHtmlWidget, "html");
+		$htmlGridItems2 = UniteFunctionsUC::getVal($arrHtmlWidget, "html2");
+		
+		$htmlDebug = UniteFunctionsUC::getVal($arrHtmlWidget, "html_debug");
+		
+		//output the html
+		$outputData = array();		
+		
+		if(!empty($htmlDebug))
+			$outputData["html_debug"] = $htmlDebug;
+		
+		$outputData["html_items"] = $htmlGridItems;
+		
+		$htmlGridItems2 = trim($htmlGridItems2);
+		
+		if(!empty($htmlGridItems2))
+			$outputData["html_items2"] = $htmlGridItems2;
 		
 		
-		dmp($_GET);
-		
-		dmp("ajax search!");
-		exit();
-		
+		HelperUC::ajaxResponseData($outputData);
 	}
 	
 	private function _______WIDGET__________(){}
@@ -1188,8 +1243,6 @@ class UniteCreatorFiltersProcess{
 		return($data);
 	}
 
-	
-		
 	
 	/**
 	 * get filters attributes

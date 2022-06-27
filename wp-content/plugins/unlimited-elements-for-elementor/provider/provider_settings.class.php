@@ -1833,6 +1833,24 @@ class UniteCreatorSettings extends UniteCreatorSettingsWork{
 		
 		$this->addTextBox($name."_maxitems", $maxItems, sprintf(esc_html__("Max %s", "unlimited-elements-for-elementor"), $textPosts), $params);
 		
+		//------- max items for current --------
+		
+		$params = array("unit"=>"posts");
+		
+		if(empty($defaultMaxPosts))
+			$defaultMaxPosts = 10;
+				
+		$params["origtype"] = UniteCreatorDialogParam::PARAM_TEXTFIELD;
+		$params["placeholder"] = $maxPostsPerPage;
+		
+		$params["description"] = sprintf(__("Override Number Of %s, leave empty for default. If you are using pagination widget, leave it empty", "unlimited-elements-for-elementor"),$textPosts);
+		
+		$params["elementor_condition"] = $arrCurrentElementorCondition;
+		$params["add_dynamic"] = true;
+		
+		$this->addTextBox($name."_maxitems_current", "", sprintf(esc_html__("Max %s", "unlimited-elements-for-elementor"), $textPosts), $params);
+		
+		
 		//----- hr before orderby --------
 		
 		$params = array();

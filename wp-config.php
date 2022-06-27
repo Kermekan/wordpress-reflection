@@ -18,6 +18,10 @@
  * @package WordPress
  */
 
+/** Sets WordPress memory limit */
+define('WP_MEMORY_LIMIT', '512M');
+
+
 // ** Database settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
 define( 'DB_NAME', 'wordpress' );
@@ -95,5 +99,3 @@ if ( ! defined( 'ABSPATH' ) ) {
 /** Sets up WordPress vars and included files. */
 require_once ABSPATH . 'wp-settings.php';
 
-/** Sets WordPress memory limit */
-define('WP_MEMORY_LIMIT', '512M');
