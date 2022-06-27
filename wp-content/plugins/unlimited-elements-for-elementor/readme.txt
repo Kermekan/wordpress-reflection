@@ -470,7 +470,14 @@ Note : This plugin works with Elementor. Make sure you have [Elementor](https://
 
 == Changelog ==
 
-version 1.5.17:
+
+version 1.5.17 2022-06-21:
+
+* Change: updated fancybox version
+* Fix: Fixed bug with ajax load more and ajax pagination
+
+
+version 1.5.17 2022-06-09:
 
 * Feature: fixed entrance animation attribute
 * Fix: fixed uc_inside_editor variable inside background widget

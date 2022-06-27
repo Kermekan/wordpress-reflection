@@ -670,7 +670,10 @@ class UniteCreatorElementorPagination{
 	 */
 	public function getLoadmoreData($isEditMode = false){
 		
+		//editor mode
 		if($isEditMode == true){
+			
+			dmp("edit mode!");
 			
 			$output = array();
 			$output["attributes"] = "";

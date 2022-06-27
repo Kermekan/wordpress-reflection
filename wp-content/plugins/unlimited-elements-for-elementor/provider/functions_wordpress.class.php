@@ -103,7 +103,7 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 		public static function getPostTypeTitle($postType){
 			
 			$objType = get_post_type_object($postType);
-						
+			
 			if(empty($objType))
 				return($postType);
 

@@ -1705,10 +1705,10 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 	    	
 			if(isset($_GET["elementor-preview"]))
 				return(true);
-	    	
+	    					
 	    	$argPost = UniteFunctionsUC::getPostGetVariable("post", "", UniteFunctionsUC::SANITIZE_KEY);
 	    	$argAction = UniteFunctionsUC::getPostGetVariable("action", "", UniteFunctionsUC::SANITIZE_KEY);
-			
+
 	    	if($argAction == "elementor_render_widget" || $argAction == "elementor_ajax" || $argAction == "unlimitedelements_ajax_action")
 	    		return(true);
 	    	

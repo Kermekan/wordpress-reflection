@@ -1,5 +1,11 @@
 
 
+version 1.5.18:
+
+-change: updated fancybox version
+-bug fix: Fixed bug with ajax load more and ajax pagination
+
+
 version 1.5.17:
 
 -feature: fixed entrance animation attribute

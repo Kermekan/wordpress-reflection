@@ -790,7 +790,7 @@ class UniteCreatorTemplateEngineWork{
 				return($response);
 			break;
 			case "get_loadmore_data":
-				
+								
 				$objPagination = new UniteCreatorElementorPagination();
 				$strData = $objPagination->getLoadmoreData(UniteCreatorElementorIntegrate::$isEditMode);
 				

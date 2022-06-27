@@ -1377,10 +1377,11 @@ function UEDynamicFilters(){
 		
 		var ajaxtype = "get";
 		
-		if(objData){
+		if(jQuery.isEmptyObject(objData) == false){
 			ajaxData["data"] = objData;
 			ajaxtype = "post";
 		}
+				
 		
 		var ajaxOptions = {
 				type:ajaxtype,
