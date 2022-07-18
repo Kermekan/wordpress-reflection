@@ -120,6 +120,7 @@
     }
 
     function transferHash(originalUrl, newUrl) {
+    	
         var pos = originalUrl.indexOf('#');
 
         if (-1 === pos) {
@@ -293,7 +294,16 @@
     }
 
     function iframeHandler(target) {
-        return '<div class="lity-iframe-container"><iframe frameborder="0" allowfullscreen src="' + target + '"/></div>';
+    	
+    	var isVimeo = target && (target.indexOf("https://player.vimeo.com/") === 0);
+
+    	var addHtml = "";
+    	if(isVimeo == true)
+    		addHtml = "allow=\"autoplay; fullscreen; picture-in-picture\"";
+    	
+    	var htmlFrame = '<div class="lity-iframe-container"><iframe frameborder="0" allowfullscreen '+addHtml+' src="' + target + '"/></div>';
+    	
+    	return(htmlFrame);
     }
 
     function winHeight() {
@@ -460,7 +470,15 @@
         return {handler: handler, content: content || ''};
     }
 
+    
+    function trace(str){
+    	
+    	console.log(str);
+    	
+    }
+    
     function Lity(target, options, opener, activeElement) {
+    	    	 
         var self = this;
         var result;
         var isReady = false;

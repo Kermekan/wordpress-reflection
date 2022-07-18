@@ -592,7 +592,7 @@ class UniteProviderFunctionsUC{
 		
 		$verified = wp_verify_nonce($nonce, GlobalsUC::PLUGIN_NAME."_actions");
 		if($verified == false)
-			UniteFunctionsUC::throwError("Action security failed, please repeat action");
+			UniteFunctionsUC::throwError("Action security failed, please refresh the page and try again.");
 	
 	}
 	

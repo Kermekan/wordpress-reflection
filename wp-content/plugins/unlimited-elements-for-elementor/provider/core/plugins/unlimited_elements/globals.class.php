@@ -11,19 +11,16 @@ class GlobalsUnlimitedElements{
 	
 	public static $enableInsideNotification = true;
 	
-	//public static $insideNotificationText = "Unlock Access To All PRO Widgets and Features.  <a href='https://unlimited-elements.com/pricing/' target='_blank'>Upgrade Now</a> ";
-	//public static $insideNotificationUrl = "https://unlimited-elements.com/blackfriday/";
-	
-	public static $insideNotificationText = "Birthday Sale! Save up-to 50% off. <br> Time is running out! &nbsp; <a href='https://unlimited-elements.com/pricing/' target='_blank'>View Deal</a> ";
+	public static $insideNotificationText = "Unlock Access To All PRO Widgets and Features.  <a href='https://unlimited-elements.com/pricing/' target='_blank'>Upgrade Now</a> ";
 	public static $insideNotificationUrl = "https://unlimited-elements.com/pricing/";
 	
-	public static $showAdminNotice = true;
+	public static $showAdminNotice = false;
 	public static $arrAdminNotice = array(
 		"id"=>"birthday-3-sale",
 		//"text"=>"Birthday Sale IS Here!",
-		"banner"=>"birthday-3-banner.png",
-		//"type"=>"advanced",
-		"type"=>"banner",	//advanced,banner
+		//"banner"=>"birthday-3-banner.png",
+		"type"=>"advanced",
+		//"type"=>"banner",	//advanced,banner
 		//"button_text"=>"Show Me More",
 		"button_link"=>"https://unlimited-elements.com/pricing/",
 		"expire"=>"",

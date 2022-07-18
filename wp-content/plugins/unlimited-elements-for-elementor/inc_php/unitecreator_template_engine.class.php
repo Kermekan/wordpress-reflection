@@ -104,7 +104,12 @@ class UniteCreatorTemplateEngineWork{
 						
 			switch($input){
 				case "shuffle":		//shuffle items
+					
 					shuffle($this->arrItems);
+					
+					foreach($this->arrItems as $key => $item)
+						$this->arrItems[$key][$templateName]["item_index"] = ($key+1);						
+					
 				break;
 				case "one_random":		//get one random item
 					shuffle($this->arrItems);
@@ -378,7 +383,7 @@ class UniteCreatorTemplateEngineWork{
 	 * convert date to type
 	 */
 	public function put_date_utc($strDate){
-						
+		
 		$stamp = strtotime($strDate);
 		
 		$strUTC = gmdate('Y/m/d H:i:s', $stamp);
@@ -953,11 +958,26 @@ class UniteCreatorTemplateEngineWork{
 				return($userData);
 				
 			break;
+			case "get_url_page":
 			case "get_url_ajax":
 				
 				$urlBase = UniteFunctionsUC::getBaseUrl(GlobalsUC::$current_page_url);
 				
 				return($urlBase);
+			break;
+			case "put_docready_start":
+		
+				$widgetID = UniteFunctionsUC::getVal($this->arrParams, "uc_id");
+				
+				HelperHtmlUC::putDocReadyStartJS($widgetID);
+				
+			break;
+			case "put_docready_end":
+				
+				$widgetID = UniteFunctionsUC::getVal($this->arrParams, "uc_id");
+				
+				HelperHtmlUC::putDocReadyEndJS($widgetID);
+				
 			break;
 			default:
 				
@@ -1132,6 +1152,9 @@ class UniteCreatorTemplateEngineWork{
 		if(empty($this->arrTemplates))
 			UniteFunctionsUC::throwError("No templates found");
 		
+		if(class_exists("Twig_Loader_Array") == false)
+			UniteFunctionsUC::throwError("Twig template engine not loaded. Please check if it collides with some other plugin that also loading twig engine.");
+			
 		$loader = new Twig_Loader_Array($this->arrTemplates);
 		
 		$arrOptions = array();

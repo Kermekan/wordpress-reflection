@@ -969,7 +969,7 @@ class UniteCreatorFiltersProcess{
 			$request = $query->request;
 			
 			$taxRequest = $this->getInitFiltersTaxRequest($request, $testTermIDs);
-						
+			
 			$db = HelperUC::getDB();
 			$arrFoundTermIDs = $db->fetchSql($taxRequest);
 						
@@ -977,6 +977,7 @@ class UniteCreatorFiltersProcess{
 			
 			//set the test term id's for the output
 			GlobalsProviderUC::$arrTestTermIDs = $arrFoundTermIDs;			
+						
 		}
 				
 		$htmlGridItems = UniteFunctionsUC::getVal($arrHtmlWidget, "html");
@@ -1013,7 +1014,12 @@ class UniteCreatorFiltersProcess{
 		if(!empty($this->contentWidgetsDebug))
 			$outputData["html_widgets_debug"] = $this->contentWidgetsDebug;
 		
-			
+		//add query data
+		
+		$arrQueryData = HelperUC::$operations->getLastQueryData();
+		
+		$outputData["query_data"] = $arrQueryData;
+		
 		HelperUC::ajaxResponseData($outputData);
 		
 	}
@@ -1212,6 +1218,13 @@ class UniteCreatorFiltersProcess{
 		
 		if(!empty($filterBehavoiur))
 			$strAttributes .= " data-filterbehave='$filterBehavoiur' ";
+
+		//add last query
+		$arrQueryData = HelperUC::$operations->getLastQueryData();
+
+		$jsonQueryData = UniteFunctionsUC::jsonEncodeForHtmlData($arrQueryData);
+		
+		$strAttributes .= " querydata='$jsonQueryData'";
 		
 		$this->includeClientSideScripts();
 		
@@ -1331,7 +1344,7 @@ class UniteCreatorFiltersProcess{
 		}else{
 			
 			$arrRequest = $this->getRequestFilters();
-			
+						
 			if(empty($arrRequest))
 				return($arrTerms);
 			
@@ -1401,6 +1414,8 @@ class UniteCreatorFiltersProcess{
 		$addFirst = UniteFunctionsUC::getVal($data, "add_first");
 		$addFirst = UniteFunctionsUC::strToBool($addFirst);
 		
+		//add first and check if selected
+		
 		if($addFirst == true){
 			
 			$text = UniteFunctionsUC::getVal($data, "first_item_text", __("All","unlimited-elements-for-elementor"));
@@ -1432,7 +1447,6 @@ class UniteCreatorFiltersProcess{
 		if(empty($arrTerms))
 			return($arrTerms);
 		
-		
 		foreach($arrTerms as $index => $term){
 			
 			$term["index"] = $index;
@@ -1452,7 +1466,7 @@ class UniteCreatorFiltersProcess{
 	 * modify the terms for init after
 	 */
 	private function modifyOutputTerms_setNumPosts($arrTerms){
-		
+			
 		if(GlobalsProviderUC::$arrTestTermIDs === null)
 			return($arrTerms);
 			
@@ -1496,6 +1510,7 @@ class UniteCreatorFiltersProcess{
 			
 			$arrTerms[$key] = $term;			
 		}
+		
 				
 		return($arrTerms);
 	}
@@ -1629,7 +1644,7 @@ class UniteCreatorFiltersProcess{
 		$data["filter_first_load"] = $isFirstLoad?"yes":"no";
 		
 		//modify terms
-		
+				
 		$arrTerms = UniteFunctionsUC::getVal($data, "taxonomy");
 		
 		$arrTerms = $this->modifyOutputTerms_setNumPosts($arrTerms, $isInitAfter, $isFirstLoad);
@@ -1637,18 +1652,20 @@ class UniteCreatorFiltersProcess{
 		//modify the selected class
 		$arrTerms = $this->modifyOutputTerms_modifySelected($arrTerms, $data);
 		
-		//on init mode - modify selected and grayed loader
-		if($isUnderAjax == false || self::$isModeInit == true){
+		//on init mode - modify selected and grayed loader - canceled it
+		//if($isUnderAjax == false || self::$isModeInit == true){
 			
-			$arrTerms = $this->modifyOutputTerms_modifySelectedByRequest($arrTerms);
-		}
+		$arrTerms = $this->modifyOutputTerms_modifySelectedByRequest($arrTerms);
+		
+		//}
+		
 		
 		if($isInitAfter == true && !empty($limitGrayedItems) && $isUnderAjax == false)
 			$arrTerms = $this->modifyOutputTerms_modifyLimitGrayed($arrTerms, $limitGrayedItems);
 		
 		$arrTerms = $this->modifyOutputTerms_setSelectedClass($arrTerms);
 		
-		
+				
 		$data["taxonomy"] = $arrTerms;
 		
 		return($data);

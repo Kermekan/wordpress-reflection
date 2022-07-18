@@ -1720,7 +1720,7 @@ class UniteCreatorElementorWidget extends Widget_Base {
     		$arrControl["condition"] = $elementorCondition;
     	}
     	
-    		
+    	
     	$this->objControls->add_group_control(Group_Control_Typography::get_type(), $arrControl);
     	
     }
@@ -2114,6 +2114,9 @@ class UniteCreatorElementorWidget extends Widget_Base {
 			$debugTypeOptions["post_titles"] = __( 'Posts Titles', 'unlimited-elements-for-elementor' );
 			$debugTypeOptions["post_meta"] = __( 'Posts Titles and Meta', 'unlimited-elements-for-elementor' );
 		}
+		
+		$debugTypeOptions["current_post_data"] = __( 'Current Post Data', 'unlimited-elements-for-elementor' );
+		
 		
 		$hasDebugType = (count($debugTypeOptions) > 1);
 		

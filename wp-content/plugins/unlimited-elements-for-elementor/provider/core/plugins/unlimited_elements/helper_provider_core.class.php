@@ -384,6 +384,12 @@ class HelperProviderCoreUC_EL{
 	 */
 	public static function includeHoverAnimationsStyles(){
 		
+		if(class_exists("\Elementor\Control_Hover_Animation") == false)
+			return(false);
+		
+		if(method_exists("\Elementor\Control_Hover_Animation", "get_assets") == false)
+			return(false);
+				
 		$assets = \Elementor\Control_Hover_Animation::get_assets(array("something"));
 		
 		if(empty($assets))

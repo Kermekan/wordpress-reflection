@@ -1,5 +1,39 @@
 
 
+version 1.5.21:
+
+-change: end of birthday sale message update
+-feature: added docstart and docend template in widget js
+-change: added warning message in case of twig collision with other plugins
+
+
+version 1.5.20:
+
+-bug fix: fixed ajax pagination in some cases
+-bug fix: fixed small php bug with hover animations control
+-bug fix: fixed lity lightbox with vimeo autoplay
+-feature: added more widget debug type - current post fields
+-bug fix: fixed item index after shuffle
+-feature: updated admin title on edit widget view
+-bug fix: fixed some seleted tab filters related issues
+-bug fix: fixed load more filter doubly ajax request in some cases
+-feature: added option to carousel: scroll to head
+-change: changed gallery arrows to svg
+-bug fix: fixed woo scedualed sale price output
+-feature: added query data attributes into filtering grid
+-bug fix: in filters replace url with pagination as well
+
+
+
+
+version 1.5.19:
+
+-feature: added max posts to current query
+-bug fix: fixed controls conditions for elementor template control
+-feature: added more fields to dynamic grid loop (was only title)
+-change: added birthday sale banner and text
+
+
 version 1.5.18:
 
 -change: updated fancybox version

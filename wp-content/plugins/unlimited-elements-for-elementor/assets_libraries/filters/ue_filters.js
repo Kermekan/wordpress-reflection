@@ -569,7 +569,7 @@ function UEDynamicFilters(){
 	/**
 	 * get pagination selected url or null if is current
 	 */
-	function getPaginationSelectedUrl(objPagination){
+	function getPaginationSelectedData(objPagination){
 		
 		var objCurrentLink = objPagination.find("a.current");
 		
@@ -581,9 +581,22 @@ function UEDynamicFilters(){
 		if(!url)
 			return(null);
 		
-		return(url);
+		var numPage = objCurrentLink.text();
+		
+		if(jQuery.isNumeric(numPage) == false)
+			numPage = null;
+		
+		numPage = Number(numPage);
+		
+		if(numPage === 1)
+			numPage = null;
+		
+		var output = {};
+		output["url"] = url;
+		output["page"] = numPage;
+		
+		return(output);
 	}
-	
 	
 	
 	/**
@@ -597,10 +610,40 @@ function UEDynamicFilters(){
 				
 		var objLinkCurrent = objPagination.find(".current");
 		
+		
+		//on next button click
+		
+		if(objLink.hasClass("next")){
+			
+			var nextLink = objLinkCurrent.next();
+			
+			var objNextLink = jQuery(nextLink);
+			
+			objNextLink.trigger("click");
+			
+			
+			return(false);
+		}
+
+		
+		//on prev button click
+		
+		if(objLink.hasClass("prev")){
+			
+			var prevLink = objLinkCurrent.prev();
+			
+			var objPrevLink = jQuery(prevLink);
+			
+			objPrevLink.trigger("click");
+			
+			return(false);
+		}
+		
+		
 		objLinkCurrent.removeClass("current");
 		
 		objLink.addClass("current");
-				
+		
 		var objGrid = objPagination.data("grid");
 		
 		if(!objGrid || objGrid.length == 0)
@@ -616,6 +659,7 @@ function UEDynamicFilters(){
 		return(false);
 	}
 
+	
 	function ________LOAD_MORE_______________(){}
 	
 	
@@ -1027,7 +1071,7 @@ function UEDynamicFilters(){
 	 * set html grid from ajax response
 	 */
 	function operateAjax_setHtmlGrid(response, objGrid, isLoadMore){
-				
+		
 		if(objGrid.length == 0)
 			return(false);
 				
@@ -1067,6 +1111,18 @@ function UEDynamicFilters(){
 				objEmptyMessage.show();
 			else
 				objEmptyMessage.hide();				
+		}
+		
+		var queryData = getVal(response, "query_data");
+				
+		objGrid.removeAttr("querydata");
+		
+		if(queryData){
+			
+			var jsonData = JSON.stringify(queryData);
+			objGrid.attr("querydata", jsonData);
+			
+			objGrid.data("querydata", queryData);
 		}
 		
 		//if custom refresh - just save the new html in data
@@ -1571,6 +1627,7 @@ function UEDynamicFilters(){
 		
 		var isSetUrl = (behave == "mixed");
 		
+		
 		if(isFiltersInit == false && isSetUrl === true){
 			
 			history.replaceState({}, null, urlReplace);
@@ -1647,6 +1704,7 @@ function UEDynamicFilters(){
 		var objTaxIDs = {};
 		var strSelectedTerms = "";
 		
+		
 		//add widget id of the filter to refresh
 		
 		//get ajax options
@@ -1666,9 +1724,16 @@ function UEDynamicFilters(){
 					var isClicked = objFilter.hasClass(g_vars.CLASS_CLICKED);
 					if(isClicked == true){
 						
-						var urlPagination = getPaginationSelectedUrl(objFilter);
+						 var paginationData = getPaginationSelectedData(objFilter);
+						 
+						 var urlPagination = getVal(paginationData, "url");
 						
-						if(urlPagination)
+						 var paginationPage = getVal(paginationData, "page"); 
+						 
+						 if(paginationPage)
+							 page = paginationPage;
+						 else
+						  if(urlPagination)
 							urlAjax = urlPagination;
 						
 						objFilter.removeClass(g_vars.CLASS_CLICKED);
@@ -1823,8 +1888,11 @@ function UEDynamicFilters(){
 		if(urlAddition_filtersTest)
 			urlAjax = addUrlParam(urlAjax, urlAddition_filtersTest);
 		
-		if(page)
+		if(page){
 			urlAjax += "&ucpage="+page;
+			
+			urlReplace = addUrlParam(urlReplace, "ucpage="+page);
+		}
 		
 		if(offset)
 			urlAjax += "&ucoffset="+offset;
@@ -1962,11 +2030,16 @@ function UEDynamicFilters(){
 		//init the events
 		var objParent = objFilters.parents(".elementor");
 		
+		if(objParent.length > 1)
+			objParent = jQuery(objParent[0]);
+		
 		for(var type in arrTypes){
 						
 			switch(type){
 				case g_types.PAGINATION:
-					objParent.on("click",".uc-filter-pagination a", onAjaxPaginationLinkClick);			
+					
+					objParent.on("click",".uc-filter-pagination a", onAjaxPaginationLinkClick);
+					
 				break;
 				case g_types.LOADMORE:
 					
@@ -2086,6 +2159,7 @@ function UEDynamicFilters(){
 		ajaxInitFilters();
 				
 	}
+	
 	
 	/**
 	 * is element in viewport

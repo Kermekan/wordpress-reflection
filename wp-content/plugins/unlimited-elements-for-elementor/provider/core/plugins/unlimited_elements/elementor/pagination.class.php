@@ -631,7 +631,7 @@ class UniteCreatorElementorPagination{
 			}
 			
 		}else{		//on single
-						
+			
 			//skip for home pages
 			$options = $this->getSinglePageOptions($options, $forceFormat);
 			

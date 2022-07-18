@@ -185,7 +185,7 @@ class UniteCreatorParamsProcessor extends UniteCreatorParamsProcessorWork{
 				return(array());
 				
 			$arrOutput = array();
-			
+						
 			$index = 0;
 			foreach($arrTerms as $slug => $arrTerm){
 				

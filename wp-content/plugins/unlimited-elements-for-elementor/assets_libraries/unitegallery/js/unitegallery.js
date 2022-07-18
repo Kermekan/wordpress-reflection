@@ -1,4 +1,4 @@
-//Unite Gallery, Version: 1.7.59, released 26 May 2022
+//Unite Gallery, Version: 1.7.60, released 11 July 2022
 
 //------ ug-common-libraries.js------ 
 
@@ -12892,12 +12892,12 @@ function UGSlider(){
 		  
 		  slider_arrow_left_align_hor:"left",	  		//left, center, right - left arrow horizonal align
 		  slider_arrow_left_align_vert:"middle", 		//top, middle, bottom - left arrow vertical align
-		  slider_arrow_left_offset_hor:20,		  		//left arrow horizontal offset
+		  slider_arrow_left_offset_hor:10,		  		//left arrow horizontal offset
 		  slider_arrow_left_offset_vert:0,		  		//left arrow vertical offset
 		  
 		  slider_arrow_right_align_hor:"right",   		//left, center, right - right arrow horizontal algin
 		  slider_arrow_right_align_vert:"middle", 		//top, middle, bottom - right arrow vertical align
-		  slider_arrow_right_offset_hor:20,	   			//right arrow horizontal offset 
+		  slider_arrow_right_offset_hor:10,	   			//right arrow horizontal offset 
 		  slider_arrow_right_offset_vert:0,	   			//right arrow vertical offset
 		  
 		  slider_enable_progress_indicator: true,		 //enable progress indicator element
@@ -13144,11 +13144,16 @@ function UGSlider(){
 		html += "</div>";	//end inner
 		
 		//----------------
-				
+		
 		//add arrows
 		if(g_options.slider_enable_arrows == true){
-			html += "<div class='ug-slider-control ug-arrow-left ug-skin-"+g_options.slider_arrows_skin+"'></div>";
-			html += "<div class='ug-slider-control ug-arrow-right ug-skin-"+g_options.slider_arrows_skin+"'></div>";
+			
+			var svgArrowLeft = '<svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32"><g stroke-width="1" transform="translate(0.5, 0.5)"><polyline fill="none" stroke="#ffffff" stroke-width="1" stroke-linecap="square" stroke-miterlimit="10" points="21,2 11,16 21,30 " stroke-linejoin="miter"></polyline></g></svg>';
+			
+			var svgArrowRight = '<svg x="0px" y="0px" width="32px" height="32px" viewBox="0 0 32 32"><g stroke-width="1" transform="translate(0.5, 0.5)"><polyline fill="none" stroke="#ffffff" stroke-width="1" stroke-linecap="square" stroke-miterlimit="10" points="11,2 21,16 11,30 " stroke-linejoin="miter"></polyline></g></svg>';
+			
+			html += "<div class='ug-slider-control ug-arrow-left ug-skin-"+g_options.slider_arrows_skin+"'>"+svgArrowLeft+"</div>";
+			html += "<div class='ug-slider-control ug-arrow-right ug-skin-"+g_options.slider_arrows_skin+"'>"+svgArrowRight+"</div>";
 		}
 		
 		//add play button
@@ -13832,7 +13837,6 @@ function UGSlider(){
 			
 		}
 		
-		trace("video top: "+top);
 		
 		g_objVideoPlayer.setPosition(left, top);
 	}

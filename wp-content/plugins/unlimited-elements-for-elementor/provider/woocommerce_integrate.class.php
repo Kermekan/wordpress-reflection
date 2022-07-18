@@ -621,7 +621,6 @@ class UniteCreatorWooIntegrate{
     	$arrData["price"] = $price;
     	$arrData["sale_price"] = $salePrice;
     	
-    	
     	$arrProduct = array();
     	
     	$arrProduct["woo_type"] = $type;
@@ -656,19 +655,26 @@ class UniteCreatorWooIntegrate{
     		$arrProduct["woo_sale_price"] = $arrProduct["woo_sale_price_from"];
     	}
     	
+    	$finalPrice = UniteFunctionsUC::getVal($arrProduct, "woo_price");
     	$regularPrice = UniteFunctionsUC::getVal($arrProduct, "woo_regular_price");
-    	$salePrice = UniteFunctionsUC::getVal($arrProduct, "woo_sale_price");
     	
+    	//empty the sale price, if the final price equal regular price
+    	
+    	if($finalPrice == $regularPrice)
+    		$arrProduct["woo_sale_price"] = "";
+    	    	
     	//count the discout price
     	
     	$discountPercent = 0;
-    	if(!empty($salePrice) && !empty($regularPrice)){
+    	if(!empty($finalPrice) && $finalPrice < $regularPrice){
     		
-    		$discountPercent = ($regularPrice-$salePrice)/$regularPrice*100;
+    		$discountPercent = ($regularPrice-$finalPrice)/$regularPrice*100;
     		$discountPercent = round($discountPercent);
     	}
     	
     	$arrProduct["woo_discount_percent"] = $discountPercent;
+    	
+    	
     	
     	//add currency
     	$arrProduct["woo_currency"] = $this->currency;

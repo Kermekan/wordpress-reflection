@@ -1287,6 +1287,77 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 	}
 	
 	/**
+	 * modify debug array
+	 */
+	private function modifyDebugArray($arrDebug){
+
+		if(is_array($arrDebug) == false)		
+			$arrDebug = (array)$arrDebug;
+		
+		if(empty($arrDebug))
+			return($arrDebug);
+			
+		$output = array();
+		
+		foreach($arrDebug as $key => $value){
+			
+			if(is_array($value) && count($value) == 1)
+				$value = $value[0];
+			
+			if(is_string($value) == false)
+				continue;
+				
+			$value = htmlspecialchars($value);
+			
+			if(strlen($value) > 200)
+				$value = substr($value, 0, 200)."...";
+				
+			$key = " ".$key;
+				
+			$output[$key] = $value;
+		}
+		
+		
+		return($output);
+	}
+	
+	
+	/**
+	 * put debug data - current post
+	 */
+	private function putDebugDataHTML_currentPostData(){
+		
+		$post = get_post();
+		
+		if(empty($post)){
+			
+			dmp("no current post found");
+			return(false);
+		}
+				
+		$arrPost = $this->modifyDebugArray($post);
+		
+		dmp("<b> ------- Post  ------- </b>");
+		
+		dmp($arrPost);
+		
+		dmp("<b> ------- Post Meta ------- </b>");
+		
+		$meta = get_post_meta($post->ID);
+		
+		$meta = $this->modifyDebugArray($meta);
+		
+		dmp($meta);
+		
+		dmp("<b> ----------Terms--------- </b>");
+		
+		$terms = UniteFunctionsWPUC::getPostTerms($post);
+		
+		dmp($terms);
+		
+	}
+	
+	/**
 	 * put debug data - posts
 	 */
 	private function putDebugDataHtml_posts($arrItemData){
@@ -1415,6 +1486,11 @@ class UniteCreatorOutputWork extends HtmlOutputBaseUC{
 			case "post_meta":
 				
 				$this->putDebugDataHtml_posts($arrItemData);
+				
+			break;
+			case "current_post_data":
+				
+				$this->putDebugDataHTML_currentPostData();
 				
 			break;
 			default:

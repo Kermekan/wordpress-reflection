@@ -720,7 +720,6 @@ function UERemoteCarouselAPI(){
 	}
 
 	
-	
 	/*
 		events
 	*/
@@ -740,7 +739,7 @@ function UERemoteCarouselAPI(){
 
 			break;
 			case "change":
-								
+				
 				g_owlCarousel.on("changed.owl.carousel", func);
 				
 			break;
@@ -916,7 +915,7 @@ function UESyncObject(){
 		var objElement = objAPI.getElement();
 		
 		mapAPIs(function(api){
-			
+						
 			api.doAction("change_item", numCurrent);
 			
 		}, objElement);
@@ -1039,6 +1038,7 @@ function UESyncObject(){
 			removeDeletedAPIs();
 		
 		validate(objAPI);
+		
 		
 		//debug
 		var objElement = objAPI.getElement();

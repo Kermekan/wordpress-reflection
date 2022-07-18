@@ -1889,7 +1889,7 @@ class UniteCreatorSettings extends UniteCreatorSettingsWork{
 		$arrCondition[$name."_orderby"] = array(UniteFunctionsWPUC::SORTBY_META_VALUE, UniteFunctionsWPUC::SORTBY_META_VALUE_NUM);
 		
 		$params["elementor_condition"] = $arrCondition;
-		$params["add_dynamic"] = true;
+		$params["add_dynamic"] = false;
 		
 		$this->addTextBox($name."_orderby_meta_key1", "" , __("&nbsp;&nbsp;Custom Field Name","unlimited-elements-for-elementor"), $params);
 		

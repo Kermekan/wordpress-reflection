@@ -411,6 +411,18 @@ class UniteCreatorAddonViewChildParams{
 		
 		$arrParams[] = $this->createChildParam_code($key, $text);
 		
+
+		//----- hide id's in css ------
+
+		$key = "put_hide_ids_css(arg)";
+		$text = "
+{# this used from item css tab. argument it's the id's attribute #}
+
+{{ ucfunc(\"put_hide_ids_css\", arg) }}
+";
+		
+		$arrParams[] = $this->createChildParam_code($key, $text);
+		
 		
 		
 		//----- output ------
@@ -442,8 +454,8 @@ jQuery(document).ready(function(){
 		//----- code wrapper for popup --------
 		
 		$key = "Code Wrapper for Elementor Popup";
-		$text = "jQuery(document).ready(function(){	
-function {{uc_id}}_start(){
+		$text = "{{ ucfunc(\"put_docready_start\") }}
+		
       	
       	/* Your code should start from this function 
         	make sure you have some element with {{uc_id}} in html, example: <div id=\"{{uc_id}}\">
@@ -451,9 +463,7 @@ function {{uc_id}}_start(){
         
     	console.log(\"This code works!\"); 
     	
-}setTimeout(function(){if(jQuery(\"#{{uc_id}}\").length) {{uc_id}}_start(); else
-	jQuery( document ).on( 'elementor/popup/show', () => { if(jQuery(\"#{{uc_id}}\").length) {{uc_id}}_start();});},100);
-});";
+{{ ucfunc(\"put_docready_end\") }}";
 		$arrParams[] = $this->createChildParam_code($key, $text);
 		
 		

@@ -956,6 +956,36 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			return($classes);
 		}
 		
+		/**
+		 * modify admin title
+		 */
+		public function modifyAdminTitle($title){
+			
+			switch(self::$view){
+				case "addon":
+					
+					$addonID = UniteFunctionsUC::getGetVar("id","",UniteFunctionsUC::SANITIZE_ID);
+					
+					if(empty($addonID))
+						return($title);
+
+					try{
+						$addon = new UniteCreatorAddon();
+						$addon->initByID($addonID);
+					}catch(Exception $e){
+						return($title);
+					}
+					
+					$addonTitle = $addon->getTitle();
+					
+					$title = str_replace("Widgets", $addonTitle." | Edit < Unlimited Elements", $title);
+					
+				break;
+			}
+			
+			
+			return($title);
+		}
 		
 		/**
 		 * 
@@ -980,8 +1010,7 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			
 			$this->addAdminMenuLinks();
 			
-			//modify plugin name
-						
+
 			//add internal hook for adding a menu in arrMenus
 			$this->addAction(self::ACTION_ADMIN_MENU, "addAdminMenu");
 			
@@ -989,6 +1018,7 @@ defined('UNLIMITED_ELEMENTS_INC') or die('Restricted access');
 			if($this->isInsidePlugin() == true){
 				$this->addAction(self::ACTION_ADD_SCRIPTS, "onAddScripts", true,1, 9999);
 				$this->addLocalFilter("admin_body_class", "addAdminBodyClass");
+				$this->addLocalFilter("admin_title", "modifyAdminTitle");
 				
 			}else{	
 				$this->addAction(self::ACTION_ADD_SCRIPTS, "onAddOutsideScripts");

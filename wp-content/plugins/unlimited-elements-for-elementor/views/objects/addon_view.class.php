@@ -70,7 +70,7 @@ class UniteCreatorAddonView{
 	 * run view
 	 */
 	public function runView($isPutHtml = true){
-		
+				
 		$this->init();
 		
 		$this->putHtml();

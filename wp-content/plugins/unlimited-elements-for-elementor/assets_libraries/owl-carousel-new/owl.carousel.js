@@ -29,12 +29,12 @@
 	
 	
 	/**
-	 * debug function
-	 */
+	* debug function
+	*/
 	function debug(str){
 		
 		if(g_debug == false)
-			return(false);
+		return(false);
 		
 		trace(str);
 	}
@@ -169,35 +169,34 @@
 		};
 		
 		/**
-		 * get item width
-		 */
+		* get item width
+		*/
 		this.getItemWidth = function(){
 			
 			//caclulate item width
 			switch(this.settings.paddingType){
 				case "left":
 				case "right":
-					var width = (this.width() / this.settings.items).toFixed(3) - this.settings.margin;
+				var width = (this.width() / this.settings.items).toFixed(3) - this.settings.margin;
 				break;
-					
+				
 				break;
 				case "both":
-					var width = (this.width() / this.settings.items).toFixed(3) - this.settings.margin;
+				var width = (this.width() / this.settings.items).toFixed(3) - this.settings.margin;
 				break;
 				default:	//no stage padding
-					var width = (this.width() / this.settings.items).toFixed(3) - this.settings.margin;
+				var width = (this.width() / this.settings.items).toFixed(3) - this.settings.margin;
 				break;
 			}
 			
 			
 			if(this.settings.item_size_gap)
-				width += this.settings.item_size_gap;
+			width += this.settings.item_size_gap;
 			
 			
 			
 			return(width);
 		}
-		
 		
 		/**
 		* Current state information and their tags.
@@ -275,6 +274,8 @@
 		
 		info: false,
 		
+		scrollToHead: false,
+		scrollToHeadOffset: 0,
 		nestedItemSelector: false,
 		itemElement: 'div',
 		stageElement: 'div',
@@ -365,8 +366,8 @@
 		run: function(cache) {
 			
 			if(this.settings.debug === true)
-				g_debug = true;
-						
+			g_debug = true;
+			
 			debug("run!");
 			
 			//set 1px gap
@@ -376,7 +377,7 @@
 				
 				debug("set items size gap: 1");
 			}
-						
+			
 			debug("settings - stage padding type: "+this.settings.paddingType);
 			debug("settings - stage padding: "+this.settings.stagePadding);
 			
@@ -406,7 +407,7 @@
 				
 			}
 			
-		
+			
 			merge = null,
 			iterator = this._items.length,
 			grid = !this.settings.autoWidth,
@@ -469,13 +470,13 @@
 			previous = 0,
 			current = 0,
 			coordinates = [];
-						
+			
 			while (++iterator < size) {
 				previous = coordinates[iterator - 1] || 0;
 				current = this._widths[this.relative(iterator)] + this.settings.margin;
 				
 				var coordinate = previous + current * rtl;
-																
+				
 				coordinates.push(coordinate);
 			}
 			
@@ -507,7 +508,7 @@
 			//var parentOuterStageWidth = this.$element.width();
 			
 			debug("parent Outer Stage Width: " + parentOuterStage.width());
-			debug("element width this.$element.width(): "+ this.$element.width())
+			debug("element width this.$element.width(): "+ this.$element.width());
 			
 			
 			//set stage css
@@ -555,7 +556,7 @@
 			*/
 			
 			var cssOuter = {
-					width: parentOuterStageWidth
+				width: parentOuterStageWidth
 			};
 			
 			debug("set outer stage css");
@@ -586,7 +587,7 @@
 				
 				debug("Set stage width css (right)");
 				debug(right);
-								
+				
 			}
 			
 		}
@@ -906,38 +907,38 @@
 		dimension = dimension || Owl.Width.Default;		
 		
 		var calcWidth;
-			
+		
 		switch (dimension) {
 			case Owl.Width.Inner:
 			case Owl.Width.Outer:
-				calcWidth = this._width;
-				
-				debug("calc width for dimention: "+dimension);
-				
+			calcWidth = this._width;
+			
+			debug("calc width for dimention: "+dimension);
+			
 			default:
-				
+			
 			switch(this.settings.paddingType){
 				case "left":
 				case "right":
-					debug("calc width with stagePadding: "+this.settings.paddingType);
-					
-					calcWidth = this._width - this.settings.stagePadding + this.settings.margin;
-					
+				debug("calc width with stagePadding: "+this.settings.paddingType);
+				
+				calcWidth = this._width - this.settings.stagePadding + this.settings.margin;
+				
 				break;
 				case "both":
-					debug("calc width with stagePadding: "+this.settings.paddingType);
-					
-					calcWidth = this._width - this.settings.stagePadding*2 + this.settings.margin;
+				debug("calc width with stagePadding: "+this.settings.paddingType);
+				
+				calcWidth = this._width - this.settings.stagePadding*2 + this.settings.margin;
 				break;
 				default:
-					
-					calcWidth = this._width + this.settings.margin;
-					
-					debug("calc width without stagePadding for dimention: "+dimension);
-					
+				
+				calcWidth = this._width + this.settings.margin;
+				
+				debug("calc width without stagePadding for dimention: "+dimension);
+				
 				break;
 			}
-				
+			
 		}
 		
 		debug("carousel width (no stagepadding and margins): "+calcWidth);
@@ -989,8 +990,7 @@
 	* @protected
 	*/
 	Owl.prototype.onResize = function() {
-		
-		debug("resize");
+		debug("---------------------resize carousel-----------------------");
 		
 		if (!this._items.length) {
 			
@@ -1025,8 +1025,12 @@
 		}
 		
 		this.invalidate('width');
-		
+
+		//reset outer stage width
+		this.$stage.parent().css({'width': ''});
+
 		this.refresh();
+		this.update();
 		
 		this.leave('resizing');
 		this.trigger('resized');
@@ -1039,6 +1043,7 @@
 	* @protected
 	*/
 	Owl.prototype.registerEventHandlers = function() {
+		
 		if ($.support.transition) {
 			this.$stage.on($.support.transition.end + '.owl.core', $.proxy(this.onTransitionEnd, this));
 		}
@@ -1266,15 +1271,18 @@
 					this.settings.slideTransition ? ' ' + this.settings.slideTransition : ''
 					)
 				});
-			} else if (animate) {
+			}else if (animate) {
 				this.$stage.animate({
 					left: coordinate + 'px'
 				}, this.speed(), this.settings.fallbackEasing, $.proxy(this.onTransitionEnd, this));
-			} else {
+			}else {
 				this.$stage.css({
 					left: coordinate + 'px'
 				});
 			}
+			
+			this.scrollToHead();
+			
 		};
 		
 		/**
@@ -1528,7 +1536,7 @@
 			} else {
 				coordinate = this._coordinates[newPosition] || 0;
 			}
-						
+			
 			coordinate = Math.ceil(coordinate);
 			
 			return coordinate;
@@ -1760,6 +1768,64 @@
 				}, this)).attr('src', element.attr('src') || element.attr('data-src') || element.attr('data-src-retina'));
 			}, this));
 		};
+		
+		/**
+		*	checks if Carousel is in viewport
+		* 
+		*/
+		Owl.prototype.isElementInViewport = function(element) {
+			
+			var elementTop = element.offset().top;
+			var elementBottom = elementTop + element.outerHeight();
+			
+			var viewportTop = jQuery(window).scrollTop();
+			var viewportBottom = viewportTop + jQuery(window).height();
+			
+			var isInViwport = elementBottom > viewportTop && elementTop < viewportBottom;
+			
+			return(isInViwport);
+		} 
+		
+		
+		/**
+		* animate html, body
+		*/
+		Owl.prototype.scrollToTop = function(elementOffsetTop, offsetNumber){			
+			
+			jQuery('html, body').animate({
+				scrollTop: elementOffsetTop + offsetNumber
+			}, 400);
+		}
+		
+		
+		
+		/**
+		* scroll to head
+		*/
+		Owl.prototype.scrollToHead = function(){
+			
+			if(this.settings.scrollToHead == false)
+			return(false);
+			
+			if(this.settings.autoplay == true)
+			return(false);
+			
+			if(this.is('initializing'))
+			return(false);
+			
+			if(this.is('resizing'))
+			return(false);
+
+			var carousel = this.$element;
+			
+			if(this.isElementInViewport(carousel) == true)
+			return(false);
+
+			var carouselOffsetTop = this.$element.offset().top;
+			var offset = this.settings.scrollToHeadOffset;
+
+			this.scrollToTop(carouselOffsetTop, offset);
+		}   
 		
 		/**
 		* Destroys the carousel.
@@ -2919,7 +2985,7 @@
 				* @author Bartosz Wojciechowski
 				* @author Artus Kolanowski
 				* @author David Deutsch
-				* @author Tom De CaluwГ©
+				* @author Tom De CaluwР“В©
 				* @license The MIT License (MIT)
 				*/
 				;(function($, window, document, undefined) {

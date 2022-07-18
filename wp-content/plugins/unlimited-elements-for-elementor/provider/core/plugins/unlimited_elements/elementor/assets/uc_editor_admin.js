@@ -1575,7 +1575,7 @@ function UniteCreatorElementorEditorAdmin(){
 		window.ucLastElementorModel = model.attributes;
 		
 		window.lastWidgetType = getVal(model.attributes, "widgetType");
-				
+		
 		g_frontAPI.triggerEvent("open_widget_settings", window.ucLastElementorModel);
 		
 	}
